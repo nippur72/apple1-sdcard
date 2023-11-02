@@ -1,0 +1,11 @@
+node_modules/
+.vscode/*
+tests/*
+*.sym
+*.lst
+*.klog
+*.vs
+*.dbg
+*.asm
+*.woz
+
