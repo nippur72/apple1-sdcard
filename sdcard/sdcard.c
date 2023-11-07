@@ -20,15 +20,13 @@
 // *TODO IEC: check initpia SEI 
 // *TODO IEC: initpia reset status
 // *TODO IEC: file info after all load save
-//----------
 // *TODO IEC: pause keys in dir
 // *TODO IEC: STATUS persistent location
+// *TODO: extract from apple1-videocard-lib into apple1-sdcard
+// *TODO ripristinare easter egg
 //
-// TODO: extract from apple1-videocard-lib into apple1-sdcard
 // TODO IEC: simulare load error
-// TODO IEC: print filename in save/load ?
 // TODO IEC: programma @PRINT o comandi per aprire inviare raw
-// TODO ripristinare easter egg
 // TODO IEC: recompile APPLESOFT BASIC
 // TODO IEC: applesoft basic for IEC
 // TODO IEC: optimize error messages
@@ -39,6 +37,26 @@
 // TODO IEC: pseudo-kernal entry points
 // TODO IEC: BASIC SEQ
 // TODO verifica sd card files
+// TODO SD write on ST variable
+// TODO silent commands?
+// TODO applesoft/sd: READ A$,start
+// TODO applesoft/sd: WRITE A$,start,end
+// TODO applesoft/sd: DIR A$ (LS A$)
+// TODO applesoft/sd: LOAD A$, RUN A$
+// TODO applesoft/sd: SAVE A$, start, end (only binary)
+// TODO applesoft/sd: TYPE A$
+// TODO applesoft/sd: DUMP A$,start,end
+// TODO applesoft/sd: DEL A$
+// TODO applesoft/sd: MKDIR A$
+// TODO applesoft/sd: RMDIR A$
+// TODO applesoft/sd: CD A$
+// TODO applesoft/sd: PWD
+// TODO applesoft/sd: MOUNT
+// TODO applesoft/sd: @S A$,start,end
+// TODO applesoft/sd: @L/@V/@R A$,start
+// TODO applesoft/sd: @DIR A$
+// TODO applesoft/sd: @ERR A$
+// TODO applesoft/sd: @CMD A$
 
 // TODO comando REN
 // TODO comando COPY
