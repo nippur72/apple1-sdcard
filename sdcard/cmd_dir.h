@@ -32,8 +32,8 @@ void comando_dir(byte cmd) {
          while(1) {
             data = receive_byte_from_MCU();
             if(TIMEOUT) return;
-            woz_putc(data);
-            if(data == '\r') break;  // line terminator                        
+            if(data != 0) woz_putc(data);
+            if(data == '\r' || data == 0) break;  // line terminator or empty line                       
             data = apple1_readkey();
             if(data==27) paused = 27;                              
             else if(data!=0) paused = 1;

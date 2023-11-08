@@ -225,7 +225,7 @@ const byte OK_RESPONSE   =   0;
 // @buffer
 char filename[64]; 
 char tmp[64];
-char cd_path[64]; 
+char cd_path[64];
 
 // fixed messages
 const char *NOT_A_FILE = "?NOT A FILE";
@@ -306,12 +306,27 @@ void comando_dir(byte command) {
 
   myDir = SD.open(filename);
 
-  if(!myDir) {
-    Serial.println(F("dir not found"));    
-    send_byte_to_cpu(ERR_RESPONSE);
-    send_string_to_cpu(DIR_NOT_FOUND);
-    return;    
+  char file_path[64];
+  char pattern[64];
+  // check if directory exist and is a directory
+  if(!myDir || !myDir.isDirectory()) {
+    // not found, use the given filename as a pattern
+    split_path(filename, file_path, pattern);
+    if(file_path[0]==0) {
+      // no path given, use cd_path
+      strcpy(file_path, cd_path);    
+    }  
+    myDir = SD.open(file_path);    
+    if(!myDir || !myDir.isDirectory()) {
+      Serial.println(F("dir not found"));    
+      send_byte_to_cpu(ERR_RESPONSE);
+      send_string_to_cpu(DIR_NOT_FOUND);
+      return;    
+    }    
   }
+  else {
+    pattern[0] = 0;  // argument was a valid directory, use no pattern
+  }  
 
   // dir opened OK
   send_byte_to_cpu(OK_RESPONSE);
@@ -331,7 +346,7 @@ void comando_dir(byte command) {
       Serial.println(F("dir interrupted by the user"));
       break;       
     } else if(c == OK_RESPONSE) {
-      if(!send_next_dir_line(command)) {
+      if(!send_next_dir_line(command, pattern)) {
         Serial.println(F("dir terminated"));
         break;
       }
@@ -340,7 +355,7 @@ void comando_dir(byte command) {
   myDir.close();
 }
 
-byte send_next_dir_line(byte command) {
+byte send_next_dir_line(byte command, char *pattern) {
   // user wants a new line of dir listing
 
   while(1) {
@@ -366,14 +381,24 @@ byte send_next_dir_line(byte command) {
   
   // send the text line 
   send_byte_to_cpu(OK_RESPONSE);    
-  send_directory_entry(command);                  
+  send_directory_entry(command, pattern);                  
   myFile.close(); 
   return 1; // more lines to send
 }
 
-void send_directory_entry(byte command) {
+void send_directory_entry(byte command, char *pattern) {
   myFile.getName(filename, 64);
   strtoupper(filename);
+
+  // verify pattern matching if any
+  if(pattern[0] != 0) {
+      int len = strlen(pattern);
+      bool match_found = strncmp(filename, pattern, len) == 0;
+      if(!match_found) {
+        send_byte_to_cpu(0); // empty line
+        return;
+      }
+  }
     
   if(myFile.isDirectory()) {
     if(command != CMD_DIR) {
@@ -451,7 +476,7 @@ void send_directory_entry(byte command) {
 
       send_byte_to_cpu('\r');
     }
-  }          
+  }            
 }
 
 // **************************************************************************************

@@ -19,7 +19,7 @@ del out\*.vs
 del out\*.dbg
 
 rem === copy sdcard into emulator folder === 
-copy out\sdcard.prg ..\..\..\apple1-emu\software\sdcard.prg /y
+copy out\sdcard.prg ..\..\apple1-emu\software\sdcard.prg /y
 
 rem === shows symbol addresses to embed in applesoft basic ===
 grep comando_load_bas out/sdcard.sym
